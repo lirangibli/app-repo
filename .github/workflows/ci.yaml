@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE_NAME=lirangibli/contact-us
+          IMAGE_TAG=$(git rev-parse --short HEAD)
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:$IMAGE_TAG
+          docker push $IMAGE_NAME:latest
+
+      - name: Update GitOps Repo
+        run: |
+          git clone https://github.com/lirangibli/gitops-repo.git
+          cd gitops-repo/environments/dev
+          sed -i "s|image: .*|image: lirangibli/contact-us:latest|" values.yaml
+          git config --global user.email "your-email@example.com"
+          git config --global user.name "GitHub Actions"
+          git add values.yaml
+          git commit -m "Auto-update image to latest"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lirangibli/gitops-repo.git main
