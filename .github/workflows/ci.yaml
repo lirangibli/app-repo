@@ -18,11 +18,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+- name: Build and push Docker image
+  uses: docker/build-push-action@v3
+  with:
+    context: ./
+    file: ./Dockerfile
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: ./contact-us-project  # נתיב שמכיל את ה-Dockerfile
-          file: ./contact-us-project/Dockerfile  # ציון מפורש של מיקום ה-Dockerfile
+
           push: true
           tags: lirangibli/contact-us:latest
