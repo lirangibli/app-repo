@@ -36,10 +36,15 @@ jobs:
         run: |
           git clone https://github.com/lirangibli/gitops-repo.git
           cd gitops-repo/environments/dev
-          sed -i 's|image: .*|image: lirangibli/contact-us:latest|' values.yaml
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git commit -am "Updated image tag to latest"
-          git push
+          sed -i 's|tag: .*|tag: latest|' values.yaml
+
+          if [[ -n $(git status --porcelain) ]]; then
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git commit -am "Updated image tag to latest"
+            git push origin main
+          else
+            echo "No changes detected, skipping commit."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
