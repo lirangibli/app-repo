@@ -1,9 +1,10 @@
 replicaCount: 2
 
 image:
-  repository: your-docker-registry/contact-us  # כאן תשנה לשם ה-Registry שלך
+  repository: 816069171504.dkr.ecr.eu-central-1.amazonaws.com/contact-us
   tag: latest
   pullPolicy: IfNotPresent
+
 
 service:
   type: ClusterIP
