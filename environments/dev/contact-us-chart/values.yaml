@@ -35,3 +35,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+serviceAccount:
+  create: true
+  name: "contact-us-sa"
