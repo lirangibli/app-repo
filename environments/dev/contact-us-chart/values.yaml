@@ -5,7 +5,6 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
-
 service:
   type: ClusterIP
   port: 3000
@@ -32,10 +31,27 @@ autoscaling:
   enabled: false
 
 nodeSelector: {}
-
 tolerations: []
 
 affinity: {}
+
 serviceAccount:
   create: true
   name: "contact-us-sa"
+
+env:
+  - name: DB_HOST
+    valueFrom:
+      secretKeyRef:
+        name: contact-us-db-secret
+        key: DB_HOST
+  - name: DB_USER
+    valueFrom:
+      secretKeyRef:
+        name: contact-us-db-secret
+        key: DB_USER
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: contact-us-db-secret
+        key: DB_PASSWORD
