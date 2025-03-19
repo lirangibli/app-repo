@@ -1,3 +1,6 @@
 serviceAccount:
   create: true
   name: contact-us-sa
+service:
+  type: ClusterIP
+  port: 4000
