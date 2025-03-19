@@ -2,37 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: contact-us-app-contact-us-chart
-  namespace: default
+  labels:
+    app: contact-us-chart
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: contact-us
+      app: contact-us-chart
   template:
     metadata:
       labels:
-        app: contact-us
+        app: contact-us-chart
     spec:
-      serviceAccountName: contact-us-sa
       containers:
-        - name: contact-us
-          image: 816069171504.dkr.ecr.eu-central-1.amazonaws.com/contact-us:latest
-          imagePullPolicy: IfNotPresent
+        - name: contact-us-app
+          image: <your-docker-image>
           ports:
             - containerPort: 4000
           env:
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: contact-us-db-secret
-                  key: DB_HOST
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: contact-us-db-secret
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: contact-us-db-secret
-                  key: DB_PASSWORD
+            - name: NODE_ENV
+              value: "production"

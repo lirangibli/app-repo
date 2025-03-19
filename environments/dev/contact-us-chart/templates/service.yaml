@@ -1,19 +1,13 @@
-apiVersion: v1
+ללapiVersion: v1
 kind: Service
 metadata:
   name: contact-us-app-contact-us-chart
   namespace: default
-  labels:
-    app.kubernetes.io/instance: contact-us-app
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: contact-us-chart
-    app.kubernetes.io/version: "1.16.0"
-    helm.sh/chart: contact-us-chart-0.1.0
 spec:
   selector:
-    app: contact-us  # <-- זה התיקון! עכשיו השירות ימצא את הפודים
-  type: ClusterIP
+    app.kubernetes.io/name: contact-us-chart
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 4000
+      targetPort: 4000
+  type: ClusterIP
