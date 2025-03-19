@@ -1,15 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "contact-us-chart.fullname" . }}
+  name: contact-us-app-contact-us-chart
+  namespace: default
   labels:
-    {{- include "contact-us-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: contact-us-app
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: contact-us-chart
+    app.kubernetes.io/version: "1.16.0"
+    helm.sh/chart: contact-us-chart-0.1.0
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
-    {{- include "contact-us-chart.selectorLabels" . | nindent 4 }}
+    app: contact-us  # <-- זה התיקון! עכשיו השירות ימצא את הפודים
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
