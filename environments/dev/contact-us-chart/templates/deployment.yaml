@@ -19,7 +19,7 @@ spec:
           image: 816069171504.dkr.ecr.eu-central-1.amazonaws.com/contact-us:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 3000
+            - containerPort: 4000
           env:
             - name: DB_HOST
               valueFrom:
